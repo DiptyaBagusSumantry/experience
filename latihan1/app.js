@@ -7,10 +7,15 @@ const controller = require('./controller/index');
 const app = express();
 
 
-// app.use(bodyParser.urlencoded({extends : false}));
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extends : false}));
+app.use(bodyParser.json());
 
-app.get('/', controller.produk.getAll);
+app.get('/tampilProduk', controller.produk.getAll);
+app.get('/idNamaProduk', controller.produk.idProduk);
+app.get('/tampilProduk/:katagori', controller.produk.getOne);
+app.post('/tambahProduk', controller.produk.create);
+app.put('/editProduk/:id', controller.produk.update);
+app.delete('/hapusProduk/:id', controller.produk.delete);
 
 // app.get('/index.html', (req,res)=>{ //search index.html
 //     res.sendFile(__dirname+ "/"+ "index.html");
