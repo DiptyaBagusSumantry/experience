@@ -7,11 +7,11 @@ var produk = db.define('produk',
     namaProduk: Sequelize.STRING,
     deskripsi: Sequelize.STRING,
     katagori: Sequelize.STRING
-}, {
+}, { 
     //tablename: "produk",
-    freezeTableName: true,
-    timestamps: false
+    freezeTableName: true, //nama table tidak ditambah s
+    timestamps: false //biasnya ada tambah update terbaru 
 });
 
-//produk.removeAttribute('id');
+//produk.removeAttribute('id'); ====>>> Jika di table database tidak ada id 
 module.exports = produk;

@@ -72,9 +72,11 @@ controller.getOne = async (req,res) =>{
 
 
 controller.create = async (req,res) => {
-    //console.log(req.body)
+    // console.log(req.file)
+    console.log(req.body)
     try{
         let produk = await model.produk.create({
+            foto: req.file.path,
             namaProduk: req.body.namaProduk,
             deskripsi: req.body.deskripsi,
             katagori : req.body.katagori

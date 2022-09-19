@@ -2,29 +2,35 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./config/database/dbConnection'); // take dbConnection.js
 const controller = require('./controller/index');
-const multer  = require('multer');
+const multer  = require('multer'); // multer untuk upload gambar ke database
+const morgan = require('morgan'); //morgan untuk menampilkan history post,get,put,delete di cmd
 
 const app = express();
 
-const storage = multer.diskStorage({
-    destination: (req,res,cb) =>{
-        cb(null,'./assets');
-    },
-    filename: (req,res,cb)=>{
-        cb(null,file.originalname);
-    }
-})
-const upload = multer({storage: storage});
-
-
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extends : false}));
 app.use(bodyParser.json());
+
+app.use('/assets', express.static('assets')); 
+
+const storage = multer.diskStorage({  //
+    destination: function(req, file, cb) {
+        cb(null,'./assets/');
+    },
+    filename: function(req,file,cb) {
+        cb(null, file.originalname);
+    }
+});
+const upload = multer({storage: storage}); //untuk upload gambar menggunakan multer
+
+
 
 //Produk
 app.get('/tampilProduk', controller.produk.getAll);
 app.get('/idNamaProduk', controller.produk.idProduk); //menampilkan data id dan namaProduk
 app.get('/tampilProduk/:katagori', controller.produk.getOne);
-app.post('/tambahProduk', controller.produk.create);
+// app.post('/tambahProduk', controller.produk.create);
+app.post('/tambahProduk', upload.single('foto'), controller.produk.create);
 app.put('/editProduk/:id', controller.produk.update);
 app.delete('/hapusProduk/:id', controller.produk.delete);
 
