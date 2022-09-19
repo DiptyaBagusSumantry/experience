@@ -4,8 +4,23 @@ const db = require('./config/database/dbConnection'); // take dbConnection.js
 const controller = require('./controller/index');
 const multer  = require('multer'); // multer untuk upload gambar ke database
 const morgan = require('morgan'); //morgan untuk menampilkan history post,get,put,delete di cmd
+const basicAuth = require('express-basic-auth'); // untuk auth yitu memasukan username dan password
+const helmet = require('helmet');
 
 const app = express();
+
+app.use(helmet()); // untuk mengamankan
+
+app.use(basicAuth({  //basic auth untuk login yaitu memasukan username dan password
+    users: {'admin' : '1234'}, // username admin and password 1234
+    unauthorizedResponse : basicAuthResponse
+}));
+
+function basicAuthResponse(req){
+    return req.basicAuth
+    ?('Credentials'+ req.auth.user + ':' + req.auth.password+ 'rejected')
+    : 'Unauthorized' //respon 
+}
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extends : false}));
