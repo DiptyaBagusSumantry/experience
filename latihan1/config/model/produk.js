@@ -3,6 +3,7 @@ const db = require('../database/dbConnection');
 
 var produk = db.define('produk',
 {
+    foto: Sequelize.STRING,
     namaProduk: Sequelize.STRING,
     deskripsi: Sequelize.STRING,
     katagori: Sequelize.STRING

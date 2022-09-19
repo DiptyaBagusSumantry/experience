@@ -2,20 +2,38 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./config/database/dbConnection'); // take dbConnection.js
 const controller = require('./controller/index');
-
+const multer  = require('multer');
 
 const app = express();
+
+const storage = multer.diskStorage({
+    destination: (req,res,cb) =>{
+        cb(null,'./assets');
+    },
+    filename: (req,res,cb)=>{
+        cb(null,file.originalname);
+    }
+})
+const upload = multer({storage: storage});
 
 
 app.use(bodyParser.urlencoded({extends : false}));
 app.use(bodyParser.json());
 
+//Produk
 app.get('/tampilProduk', controller.produk.getAll);
-app.get('/idNamaProduk', controller.produk.idProduk);
+app.get('/idNamaProduk', controller.produk.idProduk); //menampilkan data id dan namaProduk
 app.get('/tampilProduk/:katagori', controller.produk.getOne);
 app.post('/tambahProduk', controller.produk.create);
 app.put('/editProduk/:id', controller.produk.update);
 app.delete('/hapusProduk/:id', controller.produk.delete);
+
+//Customers
+app.get('/tampilCustomer', controller.customer.getAll);
+app.get('/tampilCustomer/:nomerHp', controller.customer.getOne);
+app.post('/tambahCustomer', controller.customer.create);
+app.put('/editCustomer/:nomerHp', controller.customer.update);
+app.delete('/hapusCustomer/:nomerHp', controller.customer.delete);
 
 // app.get('/index.html', (req,res)=>{ //search index.html
 //     res.sendFile(__dirname+ "/"+ "index.html");
