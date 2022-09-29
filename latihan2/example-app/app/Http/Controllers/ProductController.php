@@ -17,7 +17,8 @@ class ProductController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(),400);
+            // return response()->json($validator->errors(),400);
+            return $this->errorResponse($validator->messages(), 422);
         };
 
         $Product = Product::create([
@@ -25,16 +26,22 @@ class ProductController extends Controller
             'stock' => $request->stock
         ]);
 
-        return response()
-            ->json(['message' => 'Product Created', 'data' => $Product], 201);
+        return $this->successResponse($Product, 'product Created', 201);
+
+        // return response()
+        //     ->json(['message' => 'Product Created', 'data' => $Product], 201);
     }
 
     public function read (Request $request, $id){ //membaca data sesuai id primary key
-        $Product = Product::FindOrFail($id); //finOrFail untuk mencari data 
+        $Product = Product::Find($id); //finOrFail untuk mencari data 
 
-        return response()
-            ->json(['message' => 'Product Readed', 'data' => $Product], 200);
+        // return response()
+        //     ->json(['message' => 'Product Readed', 'data' => $Product], 200);
 
+        if(!$Product){
+            return $this->errorResponse('Product Not Found', 404);
+        }
+        return $this->successResponse($Product, 'Produk Readed', 200);
     }
 
     public function put_update (Request $request, $id){ //membaca data sesuai id primary key

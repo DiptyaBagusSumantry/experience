@@ -6,11 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\Sanctum;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\Uuid; //dari folder UUID
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -41,4 +43,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function token()
+    {
+        //morphpany untuk akses token
+        return $this->morphMany(Sanctum::$personalAccessTokenModel, 'tokenable', "tokenable_type","tokenable_id");
+    }
 }

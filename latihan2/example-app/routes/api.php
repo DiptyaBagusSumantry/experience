@@ -39,8 +39,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () { //middleware peng
 Route::prefix('/product')->group(function() {
     Route::post('create', [App\Http\Controllers\ProductController::class, 'create']);
     Route::get('list', [App\Http\Controllers\ProductController::class, 'list']);
-    Route::get('{id}', [App\Http\Controllers\ProductController::class, 'read']);
-    Route::put('{id}', [App\Http\Controllers\ProductController::class, 'put_update']);
-    Route::delete('{id}', [App\Http\Controllers\ProductController::class, 'delete']);
-
+    Route::get('/productId={id}', [App\Http\Controllers\ProductController::class, 'read']);
+    Route::put('/productId={id}', [App\Http\Controllers\ProductController::class, 'put_update']);
+    Route::delete('/productId={id}', [App\Http\Controllers\ProductController::class, 'delete']);
+    Route::get('/list', [App\Http\Controllers\ProductController::class, 'list' ]);
 });
